@@ -1,0 +1,27 @@
+{
+  "name": "express-crean-architecture-play-ground",
+  "version": "1.0.0",
+  "description": "![License](https://img.shields.io/badge/license-MIT-blue.svg)\r ![Node](https://img.shields.io/badge/node->=18.0.0-green.svg)\r ![TypeScript](https://img.shields.io/badge/typescript-5.0-blue.svg)",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:dev":"tsc && node dist/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ASpooky/express-clean-architecture-play-ground.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ASpooky/express-clean-architecture-play-ground/issues"
+  },
+  "homepage": "https://github.com/ASpooky/express-clean-architecture-play-ground#readme",
+  "dependencies": {
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "@types/node": "^25.0.2"
+  }
+}
