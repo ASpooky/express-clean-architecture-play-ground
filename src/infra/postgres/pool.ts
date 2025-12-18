@@ -1,11 +1,14 @@
-import { Client } from 'pg'
+import { Pool } from 'pg'
 
-export class PostgresClientContext{
+export class PostgresPoolContext{
     host : string
     port : number
     dbName : string
     user:string
     password :string
+    MAX_POOL:number = 20
+    IDLE_TIMEOUT_MILLIS = 30000
+    CONNECTION_TIMEOUT_MILLIS = 2000
 
     constructor(){
         if (!process.env.POSTGRES_HOST || !process.env.POSTGRES_PORT || !process.env.POSTGRES_DB || !process.env.POSTGRES_USER || !process.env.POSTGRES_PASSWORD){
@@ -19,18 +22,22 @@ export class PostgresClientContext{
     }
 }
 
-export class PostgresClient{
-    context:PostgresClientContext
-    client : Client
+export class PostgresPool{
+    context:PostgresPoolContext
+    pool : Pool
     constructor(){
-        this.context = new PostgresClientContext()
+        this.context = new PostgresPoolContext()
         try{
-            this.client = new Client({
+            this.pool = new Pool({
                 host: this.context.host,
                 port: this.context.port,
                 database: this.context.dbName,
                 user: this.context.user,
-                password: this.context.password
+                password: this.context.password,
+                max: this.context.MAX_POOL,
+                idleTimeoutMillis :this.context.IDLE_TIMEOUT_MILLIS,
+                connectionTimeoutMillis: this.context.CONNECTION_TIMEOUT_MILLIS,
+                
             })
         }catch(e:unknown){
             if (e instanceof Error){
