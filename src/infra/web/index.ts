@@ -1,7 +1,7 @@
 import express from 'express';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { PostgresClient } from './infra/postgres/client.js';
+import { PostgresClient } from '../postgres/client.js';
 
 const app = express()
 
@@ -13,7 +13,7 @@ const __dirname = path.dirname(__filename);
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.set('views','src/views')
+app.set('views','src/interface/views') // いまのとこ効いてない
 
 app.get('/checkdb',async(req,res)=>{
     console.log('hi postgres')
@@ -28,7 +28,7 @@ app.get('/checkdb',async(req,res)=>{
 
 app.get('/',(req,res)=>{
     console.log('hi!')
-    res.sendFile(path.join(__dirname,'views/index.html'))
+    res.sendFile(path.join(__dirname,'interface/views/index.html'))
 })
 
 app.listen(PORT,()=>{
