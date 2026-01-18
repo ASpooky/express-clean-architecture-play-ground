@@ -4,55 +4,29 @@ import { ValidationError } from './errors/index.js'
 
 suite('ReservationId validation', () => {
 
-    test('正常系 - 8桁の英数字', () => {
-        const reservationId = new ReservationId('resv0001')
-        expect(reservationId.getValue()).toBe('resv0001')
-        expect(reservationId.toString()).toBe('resv0001')
+    test('正常系 - 任意の文字列でReservationIdを作成', () => {
+        const reservationId = new ReservationId('resv001')
+        expect(reservationId.getValue()).toBe('resv001')
+        expect(reservationId.toString()).toBe('resv001')
     })
 
-    test('正常系 - 大文字小文字混在', () => {
-        const reservationId = new ReservationId('Resv1234')
-        expect(reservationId.getValue()).toBe('Resv1234')
+    test('正常系 - UUID形式', () => {
+        const reservationId = new ReservationId('550e8400-e29b-41d4-a716-446655440000')
+        expect(reservationId.getValue()).toBe('550e8400-e29b-41d4-a716-446655440000')
     })
 
-    test('正常系 - 数字のみ', () => {
-        const reservationId = new ReservationId('12345678')
-        expect(reservationId.getValue()).toBe('12345678')
+    test('正常系 - 記号を含む文字列', () => {
+        const reservationId = new ReservationId('resv_id@test#123')
+        expect(reservationId.getValue()).toBe('resv_id@test#123')
     })
 
-    test('正常系 - 英字のみ', () => {
-        const reservationId = new ReservationId('abcdefgh')
-        expect(reservationId.getValue()).toBe('abcdefgh')
+    test('正常系 - 日本語を含む文字列', () => {
+        const reservationId = new ReservationId('予約123')
+        expect(reservationId.getValue()).toBe('予約123')
     })
 
-    test('異常系 - reservation id が8桁より短い場合', () => {
-        const wrongId = 'resv001'
-        expect(() => { new ReservationId(wrongId) }).toThrow(ValidationError)
-    })
-
-    test('異常系 - reservation id が8桁より長い場合', () => {
-        const wrongId = 'resv00001'
-        expect(() => { new ReservationId(wrongId) }).toThrow(ValidationError)
-    })
-
-    test('異常系 - reservation id にハイフンが含まれる場合', () => {
-        const wrongId = 'resv-001'
-        expect(() => { new ReservationId(wrongId) }).toThrow(ValidationError)
-    })
-
-    test('異常系 - reservation id に記号が含まれる場合', () => {
-        const wrongId = 'resv@001'
-        expect(() => { new ReservationId(wrongId) }).toThrow(ValidationError)
-    })
-
-    test('異常系 - reservation id にスペースが含まれる場合', () => {
-        const wrongId = 'resv 001'
-        expect(() => { new ReservationId(wrongId) }).toThrow(ValidationError)
-    })
-
-    test('異常系 - reservation id にアンダースコアが含まれる場合', () => {
-        const wrongId = 'resv_001'
-        expect(() => { new ReservationId(wrongId) }).toThrow(ValidationError)
+    test('異常系 - 空文字列の場合', () => {
+        expect(() => { new ReservationId('') }).toThrow(ValidationError)
     })
 
 })
@@ -60,8 +34,8 @@ suite('ReservationId validation', () => {
 suite('ReservationId.create factory method', () => {
 
     test('正常系 - ファクトリメソッドでReservationIdを作成', () => {
-        const reservationId = ReservationId.create('resvid01')
-        expect(reservationId.getValue()).toBe('resvid01')
+        const reservationId = ReservationId.create('test-reservation-id')
+        expect(reservationId.getValue()).toBe('test-reservation-id')
     })
 
 })
@@ -69,14 +43,14 @@ suite('ReservationId.create factory method', () => {
 suite('ReservationId.equals method', () => {
 
     test('正常系 - 同じ値のReservationIdは等しい', () => {
-        const reservationId1 = new ReservationId('resv0001')
-        const reservationId2 = new ReservationId('resv0001')
+        const reservationId1 = new ReservationId('resv001')
+        const reservationId2 = new ReservationId('resv001')
         expect(reservationId1.equals(reservationId2)).toBe(true)
     })
 
     test('正常系 - 異なる値のReservationIdは等しくない', () => {
-        const reservationId1 = new ReservationId('resv0001')
-        const reservationId2 = new ReservationId('resv0002')
+        const reservationId1 = new ReservationId('resv001')
+        const reservationId2 = new ReservationId('resv002')
         expect(reservationId1.equals(reservationId2)).toBe(false)
     })
 

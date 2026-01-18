@@ -9,12 +9,8 @@ export class RoomId {
     }
 
     private validate(value: string): void {
-        if (value.length !== 8) {
-            throw new ValidationError("Room idは8桁の英数字である必要があります。")
-        }
-
-        if (!/^[a-zA-Z0-9]+$/.test(value)) {
-            throw new ValidationError("Room idは英数字以外の文字が含まれてはいけません。")
+        if (value.length === 0) {
+            throw new ValidationError("Room idは空文字列にできません。")
         }
     }
 
