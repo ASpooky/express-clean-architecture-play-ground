@@ -1,3 +1,5 @@
+import { ValidationError } from "./errors/index.js"
+
 export class ReservationId {
     private readonly value: string
 
@@ -8,11 +10,11 @@ export class ReservationId {
 
     private validate(value: string): void {
         if (value.length !== 8) {
-            throw new Error("Reservation idは8桁の英数字である必要があります。")
+            throw new ValidationError("Reservation idは8桁の英数字である必要があります。")
         }
 
         if (!/^[a-zA-Z0-9]+$/.test(value)) {
-            throw new Error("Reservation idは英数字以外の文字が含まれてはいけません。")
+            throw new ValidationError("Reservation idは英数字以外の文字が含まれてはいけません。")
         }
     }
 
