@@ -1,6 +1,7 @@
 import { Room } from "./Room.js";
 import { RoomId } from "./RoomId.js";
 import { test, suite, expect } from "vitest";
+import { ValidationError } from "./errors/index.js";
 
 suite('Room name validation', () => {
 
@@ -21,12 +22,12 @@ suite('Room name validation', () => {
 
     test('名前が空文字列の場合', () => {
         const name = ''
-        expect(() => { new Room(id, name, capacity) }).toThrow('User nameは1文字以上,32文字以下である必要があります。')
+        expect(() => { new Room(id, name, capacity) }).toThrow(ValidationError)
     })
 
     test('名前が32文字を超える場合', () => {
         const name = '12345678901234567abcdefghijklmnopqrstuvwxyz'
-        expect(() => { new Room(id, name, capacity) }).toThrow('User nameは1文字以上,32文字以下である必要があります。')
+        expect(() => { new Room(id, name, capacity) }).toThrow(ValidationError)
     })
 
 })
@@ -44,12 +45,12 @@ suite('Room capacity', () => {
 
     test('異常系 - 0人', () => {
         const capacity = 0
-        expect(() => { new Room(id, name, capacity) }).toThrow('Capacityは正の整数でなければなりません。')
+        expect(() => { new Room(id, name, capacity) }).toThrow(ValidationError)
     })
 
     test('異常系 - -1人', () => {
         const capacity = -1
-        expect(() => { new Room(id, name, capacity )}).toThrow('Capacityは正の整数でなければなりません。')
+        expect(() => { new Room(id, name, capacity )}).toThrow(ValidationError)
     })
 
 })

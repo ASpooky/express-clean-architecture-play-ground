@@ -1,5 +1,6 @@
 import { test, suite, expect } from 'vitest'
 import { RoomId } from './RoomId.js'
+import { ValidationError } from './errors/index.js'
 
 suite('RoomId validation', () => {
 
@@ -26,32 +27,32 @@ suite('RoomId validation', () => {
 
     test('異常系 - room id が8桁より短い場合', () => {
         const wrongId = 'room001'
-        expect(() => { new RoomId(wrongId) }).toThrow('Room idは8桁の英数字である必要があります。')
+        expect(() => { new RoomId(wrongId) }).toThrow(ValidationError)
     })
 
     test('異常系 - room id が8桁より長い場合', () => {
         const wrongId = 'room00001'
-        expect(() => { new RoomId(wrongId) }).toThrow('Room idは8桁の英数字である必要があります。')
+        expect(() => { new RoomId(wrongId) }).toThrow(ValidationError)
     })
 
     test('異常系 - room id にハイフンが含まれる場合', () => {
         const wrongId = 'room-001'
-        expect(() => { new RoomId(wrongId) }).toThrow('Room idは英数字以外の文字が含まれてはいけません。')
+        expect(() => { new RoomId(wrongId) }).toThrow(ValidationError)
     })
 
     test('異常系 - room id に記号が含まれる場合', () => {
         const wrongId = 'room@001'
-        expect(() => { new RoomId(wrongId) }).toThrow('Room idは英数字以外の文字が含まれてはいけません。')
+        expect(() => { new RoomId(wrongId) }).toThrow(ValidationError)
     })
 
     test('異常系 - room id にスペースが含まれる場合', () => {
         const wrongId = 'room 001'
-        expect(() => { new RoomId(wrongId) }).toThrow('Room idは英数字以外の文字が含まれてはいけません。')
+        expect(() => { new RoomId(wrongId) }).toThrow(ValidationError)
     })
 
     test('異常系 - room id にアンダースコアが含まれる場合', () => {
         const wrongId = 'room_001'
-        expect(() => { new RoomId(wrongId) }).toThrow('Room idは英数字以外の文字が含まれてはいけません。')
+        expect(() => { new RoomId(wrongId) }).toThrow(ValidationError)
     })
 
 })

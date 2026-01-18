@@ -1,6 +1,7 @@
 import { test,suite,expect } from 'vitest'
 import { User } from './User.js'
 import { UserId } from './UserId.js'
+import { ValidationError } from './errors/index.js'
 
 suite('User name validation',()=>{
 
@@ -21,12 +22,12 @@ suite('User name validation',()=>{
 
     test('名前が空文字列の場合',()=>{
         const name = ''
-        expect(()=>{new User(id,name,email)}).toThrow('User nameは1文字以上,16文字以下である必要があります。')
+        expect(()=>{new User(id,name,email)}).toThrow(ValidationError)
     })
 
     test('名前が16文字を超える場合',()=>{
         const name = '12345678901234567'
-        expect(()=>{new User(id,name,email)}).toThrow('User nameは1文字以上,16文字以下である必要があります。')
+        expect(()=>{new User(id,name,email)}).toThrow(ValidationError)
     })
 
 })
@@ -44,7 +45,7 @@ suite('User email validation',()=>{
 
     test('emailに@が含まれない場合',()=>{
         const email = 'testexample.com'
-        expect(()=>{new User(id,name,email)}).toThrow('メールアドレスの形式が不正です。')
+        expect(()=>{new User(id,name,email)}).toThrow(ValidationError)
     })
 
 })

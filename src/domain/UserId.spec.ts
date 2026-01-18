@@ -1,5 +1,6 @@
 import { test, suite, expect } from 'vitest'
 import { UserId } from './UserId.js'
+import { ValidationError } from './errors/index.js'
 
 suite('UserId validation', () => {
 
@@ -26,27 +27,27 @@ suite('UserId validation', () => {
 
     test('異常系 - user id が8桁より短い場合', () => {
         const wrongId = 'test123'
-        expect(() => { new UserId(wrongId) }).toThrow('User idは8桁の英数字である必要があります。')
+        expect(() => { new UserId(wrongId) }).toThrow(ValidationError)
     })
 
     test('異常系 - user id が8桁より長い場合', () => {
         const wrongId = 'fap9bnf823'
-        expect(() => { new UserId(wrongId) }).toThrow('User idは8桁の英数字である必要があります。')
+        expect(() => { new UserId(wrongId) }).toThrow(ValidationError)
     })
 
     test('異常系 - user id にハイフンが含まれる場合', () => {
         const wrongId = 'test-123'
-        expect(() => { new UserId(wrongId) }).toThrow('User idは英数字以外の文字が含まれてはいけません。')
+        expect(() => { new UserId(wrongId) }).toThrow(ValidationError)
     })
 
     test('異常系 - user id に記号が含まれる場合', () => {
         const wrongId = 'test@123'
-        expect(() => { new UserId(wrongId) }).toThrow('User idは英数字以外の文字が含まれてはいけません。')
+        expect(() => { new UserId(wrongId) }).toThrow(ValidationError)
     })
 
     test('異常系 - user id にスペースが含まれる場合', () => {
         const wrongId = 'test 123'
-        expect(() => { new UserId(wrongId) }).toThrow('User idは英数字以外の文字が含まれてはいけません。')
+        expect(() => { new UserId(wrongId) }).toThrow(ValidationError)
     })
 
 })

@@ -1,5 +1,6 @@
 import { test, suite, expect } from 'vitest'
 import { ReservationId } from './ReservationId.js'
+import { ValidationError } from './errors/index.js'
 
 suite('ReservationId validation', () => {
 
@@ -26,32 +27,32 @@ suite('ReservationId validation', () => {
 
     test('異常系 - reservation id が8桁より短い場合', () => {
         const wrongId = 'resv001'
-        expect(() => { new ReservationId(wrongId) }).toThrow('Reservation idは8桁の英数字である必要があります。')
+        expect(() => { new ReservationId(wrongId) }).toThrow(ValidationError)
     })
 
     test('異常系 - reservation id が8桁より長い場合', () => {
         const wrongId = 'resv00001'
-        expect(() => { new ReservationId(wrongId) }).toThrow('Reservation idは8桁の英数字である必要があります。')
+        expect(() => { new ReservationId(wrongId) }).toThrow(ValidationError)
     })
 
     test('異常系 - reservation id にハイフンが含まれる場合', () => {
         const wrongId = 'resv-001'
-        expect(() => { new ReservationId(wrongId) }).toThrow('Reservation idは英数字以外の文字が含まれてはいけません。')
+        expect(() => { new ReservationId(wrongId) }).toThrow(ValidationError)
     })
 
     test('異常系 - reservation id に記号が含まれる場合', () => {
         const wrongId = 'resv@001'
-        expect(() => { new ReservationId(wrongId) }).toThrow('Reservation idは英数字以外の文字が含まれてはいけません。')
+        expect(() => { new ReservationId(wrongId) }).toThrow(ValidationError)
     })
 
     test('異常系 - reservation id にスペースが含まれる場合', () => {
         const wrongId = 'resv 001'
-        expect(() => { new ReservationId(wrongId) }).toThrow('Reservation idは英数字以外の文字が含まれてはいけません。')
+        expect(() => { new ReservationId(wrongId) }).toThrow(ValidationError)
     })
 
     test('異常系 - reservation id にアンダースコアが含まれる場合', () => {
         const wrongId = 'resv_001'
-        expect(() => { new ReservationId(wrongId) }).toThrow('Reservation idは英数字以外の文字が含まれてはいけません。')
+        expect(() => { new ReservationId(wrongId) }).toThrow(ValidationError)
     })
 
 })
