@@ -1,13 +1,13 @@
+import { RoomId } from "./RoomId.js"
 import type { IIdGenerator } from "./shared/IdGenerator.js"
 
 export class Room {
-    id: string
-    name: string
-    capacity: number
+    public readonly id: RoomId
+    public readonly name: string
+    public readonly capacity: number
 
-    constructor(id:string,name:string,capacity:number){
+    constructor(id:RoomId,name:string,capacity:number){
 
-        this.idValidation(id)
         this.nameValidation(name)
         this.capacityValidation(capacity)
 
@@ -16,21 +16,11 @@ export class Room {
         this.capacity = capacity
     }
 
-    create(name:string,capacity:number,idGenerator:IIdGenerator){
-        const id = idGenerator.generate()
+    static create(name:string,capacity:number,idGenerator:IIdGenerator):Room{
+        const id = new RoomId(idGenerator.generate())
         const room = new Room(id,name,capacity)
 
         return room
-    }
-
-    idValidation(id:string){
-        if(id.length != 8){
-            throw new Error("User idは8桁の英数字である必要があります。")
-        }
-
-        if(!/^[a-zA-Z0-9]+$/.test(id)){
-            throw new Error("User idは英数字以外の文字が含まれてはいけません。")
-        }
     }
 
     nameValidation(name:string){

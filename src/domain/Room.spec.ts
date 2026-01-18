@@ -1,39 +1,10 @@
 import { Room } from "./Room.js";
+import { RoomId } from "./RoomId.js";
 import { test, suite, expect } from "vitest";
-
-suite('Room id validation', () => {
-
-    const id = 'room0001'
-    const name = 'Conference Room A'
-    const capacity = 10
-
-    test('正常系', () => {
-        const room = new Room(id, name, capacity)
-        expect(room.id).toBe('room0001')
-        expect(room.name).toBe('Conference Room A')
-        expect(room.capacity).toBe(10)
-    })
-
-    test('room id が8桁以外の場合', () => {
-        const wrongId = 'room001'
-        expect(() => { new Room(wrongId, name, capacity) }).toThrow()
-    })
-
-    test('room id に英数字以外が含まれる場合', () => {
-        const wrongId = 'room-001'
-        expect(() => { new Room(wrongId, name, capacity) }).toThrow('User idは英数字以外の文字が含まれてはいけません。')
-    })
-
-    test('room id に記号が含まれる場合', () => {
-        const wrongId = 'room@001'
-        expect(() => { new Room(wrongId, name, capacity) }).toThrow('User idは英数字以外の文字が含まれてはいけません。')
-    })
-
-})
 
 suite('Room name validation', () => {
 
-    const id = 'room0001'
+    const id = new RoomId('room0001')
     const capacity = 10
 
     test('正常系 - 1文字の名前', () => {
@@ -62,7 +33,7 @@ suite('Room name validation', () => {
 
 suite('Room capacity', () => {
 
-    const id = 'room0001'
+    const id = new RoomId('room0001')
     const name = 'ConferenceRoomA'
 
     test('正常系 - 正の整数', () => {
@@ -79,6 +50,23 @@ suite('Room capacity', () => {
     test('異常系 - -1人', () => {
         const capacity = -1
         expect(() => { new Room(id, name, capacity )}).toThrow('Capacityは正の整数でなければなりません。')
+    })
+
+})
+
+suite('Room.create static method', () => {
+
+    const name = 'Conference Room A'
+    const capacity = 10
+
+    test('IdGeneratorを使ってルームを作成', () => {
+        const mockIdGenerator = {
+            generate: () => 'roomid12'
+        }
+        const room = Room.create(name, capacity, mockIdGenerator)
+        expect(room.id.getValue()).toBe('roomid12')
+        expect(room.name).toBe('Conference Room A')
+        expect(room.capacity).toBe(10)
     })
 
 })
