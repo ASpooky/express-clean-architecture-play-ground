@@ -1,39 +1,10 @@
 import { test,suite,expect } from 'vitest'
 import { User } from './User.js'
-
-suite('User id validation',()=>{
-
-    const id = 'birubiru'
-    const name = 'spbg'
-    const email = 'test@test.com'
-
-    test('正常系',()=>{
-        const user = new User(id,name,email)
-        expect(user.id).toBe('birubiru')
-        expect(user.name).toBe('spbg')
-        expect(user.email).toBe('test@test.com')
-    })
-
-    test('user id が8桁以外の場合',()=>{
-        const wrongId = 'fap9bnf823'
-        expect(()=>{new User(wrongId,name,email)}).toThrow()
-    })
-
-    test('user id に英数字以外が含まれる場合',()=>{
-        const wrongId = 'test-123'
-        expect(()=>{new User(wrongId,name,email)}).toThrow('User idは英数字以外の文字が含まれてはいけません。')
-    })
-
-    test('user id に記号が含まれる場合',()=>{
-        const wrongId = 'test@123'
-        expect(()=>{new User(wrongId,name,email)}).toThrow('User idは英数字以外の文字が含まれてはいけません。')
-    })
-
-})
+import { UserId } from './UserId.js'
 
 suite('User name validation',()=>{
 
-    const id = 'birubiru'
+    const id = new UserId('birubiru')
     const email = 'test@test.com'
 
     test('正常系 - 1文字の名前',()=>{
@@ -62,7 +33,7 @@ suite('User name validation',()=>{
 
 suite('User email validation',()=>{
 
-    const id = 'birubiru'
+    const id = new UserId('birubiru')
     const name = 'spbg'
 
     test('正常系',()=>{
@@ -88,7 +59,7 @@ suite('User.create static method',()=>{
             generate: ()=>'testid12'
         }
         const user = User.create(name,email,mockIdGenerator)
-        expect(user.id).toBe('testid12')
+        expect(user.id.getValue()).toBe('testid12')
         expect(user.name).toBe('spbg')
         expect(user.email).toBe('test@test.com')
     })

@@ -1,12 +1,12 @@
 import type { IIdGenerator } from "./shared/IdGenerator.js"
+import { UserId } from "./UserId.js"
 
 export class User {
-    public readonly id : string
+    public readonly id : UserId
     public readonly name : string
     public readonly email : string
 
-    constructor(id:string,name:string,email:string){
-        this.idValidation(id)
+    constructor(id:UserId,name:string,email:string){
         this.nameValidation(name)
         this.emailValidation(email)
 
@@ -16,20 +16,10 @@ export class User {
     }
 
     static create(name:string, email:string, idGenerator:IIdGenerator):User{
-        const id = idGenerator.generate()
+        const id = new UserId(idGenerator.generate())
 
         const user = new User(id,name,email)
         return user
-    }
-
-    private idValidation(id:string){
-        if(id.length != 8){
-            throw new Error("User idは8桁の英数字である必要があります。")
-        }
-
-        if(!/^[a-zA-Z0-9]+$/.test(id)){
-            throw new Error("User idは英数字以外の文字が含まれてはいけません。")
-        }
     }
 
     private nameValidation(name:string){
