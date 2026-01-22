@@ -1,4 +1,3 @@
-import type { IIdGenerator } from "./shared/IdGenerator.js"
 import { UserId } from "./UserId.js"
 import { ValidationError } from "./errors/index.js"
 
@@ -16,10 +15,10 @@ export class User {
         this.email = email
     }
 
-    static create(name:string, email:string, idGenerator:IIdGenerator):User{
-        const id = new UserId(idGenerator.generate())
+    static create(id:string, name:string, email:string):User{
+        const userId = new UserId(id)
 
-        const user = new User(id,name,email)
+        const user = new User(userId,name,email)
         return user
     }
 

@@ -1,5 +1,4 @@
 import type { RoomId } from "./RoomId.js"
-import type { IIdGenerator } from "./shared/IdGenerator.js"
 import type { UserId } from "./UserId.js"
 import { ReservationId } from "./ReservationId.js"
 import { ValidationError, BusinessRuleViolationError } from "./errors/index.js"
@@ -25,11 +24,11 @@ export class Reservation{
         this.status = status
     }
 
-    static create(userId:UserId,roomId:RoomId,startTime:Date,endTime:Date,idGenerator:IIdGenerator):Reservation{
-        const id = new ReservationId(idGenerator.generate())
+    static create(id:string, userId:UserId, roomId:RoomId, startTime:Date, endTime:Date):Reservation{
+        const reservationId = new ReservationId(id)
         const status: ReservationStatus = "Confirm"
 
-        const reservation = new Reservation(id, userId, roomId, startTime, endTime, status)
+        const reservation = new Reservation(reservationId, userId, roomId, startTime, endTime, status)
         return reservation
     }
 

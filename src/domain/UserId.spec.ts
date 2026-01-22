@@ -4,50 +4,29 @@ import { ValidationError } from './errors/index.js'
 
 suite('UserId validation', () => {
 
-    test('正常系 - 8桁の英数字', () => {
-        const userId = new UserId('birubiru')
-        expect(userId.getValue()).toBe('birubiru')
-        expect(userId.toString()).toBe('birubiru')
+    test('正常系 - 任意の文字列でUserIdを作成', () => {
+        const userId = new UserId('user123')
+        expect(userId.getValue()).toBe('user123')
+        expect(userId.toString()).toBe('user123')
     })
 
-    test('正常系 - 大文字小文字混在', () => {
-        const userId = new UserId('Test1234')
-        expect(userId.getValue()).toBe('Test1234')
+    test('正常系 - UUID形式', () => {
+        const userId = new UserId('550e8400-e29b-41d4-a716-446655440000')
+        expect(userId.getValue()).toBe('550e8400-e29b-41d4-a716-446655440000')
     })
 
-    test('正常系 - 数字のみ', () => {
-        const userId = new UserId('12345678')
-        expect(userId.getValue()).toBe('12345678')
+    test('正常系 - 記号を含む文字列', () => {
+        const userId = new UserId('user_id@test#123')
+        expect(userId.getValue()).toBe('user_id@test#123')
     })
 
-    test('正常系 - 英字のみ', () => {
-        const userId = new UserId('abcdefgh')
-        expect(userId.getValue()).toBe('abcdefgh')
+    test('正常系 - 日本語を含む文字列', () => {
+        const userId = new UserId('ユーザー123')
+        expect(userId.getValue()).toBe('ユーザー123')
     })
 
-    test('異常系 - user id が8桁より短い場合', () => {
-        const wrongId = 'test123'
-        expect(() => { new UserId(wrongId) }).toThrow(ValidationError)
-    })
-
-    test('異常系 - user id が8桁より長い場合', () => {
-        const wrongId = 'fap9bnf823'
-        expect(() => { new UserId(wrongId) }).toThrow(ValidationError)
-    })
-
-    test('異常系 - user id にハイフンが含まれる場合', () => {
-        const wrongId = 'test-123'
-        expect(() => { new UserId(wrongId) }).toThrow(ValidationError)
-    })
-
-    test('異常系 - user id に記号が含まれる場合', () => {
-        const wrongId = 'test@123'
-        expect(() => { new UserId(wrongId) }).toThrow(ValidationError)
-    })
-
-    test('異常系 - user id にスペースが含まれる場合', () => {
-        const wrongId = 'test 123'
-        expect(() => { new UserId(wrongId) }).toThrow(ValidationError)
+    test('異常系 - 空文字列の場合', () => {
+        expect(() => { new UserId('') }).toThrow(ValidationError)
     })
 
 })
@@ -55,8 +34,8 @@ suite('UserId validation', () => {
 suite('UserId.create factory method', () => {
 
     test('正常系 - ファクトリメソッドでUserIdを作成', () => {
-        const userId = UserId.create('testid12')
-        expect(userId.getValue()).toBe('testid12')
+        const userId = UserId.create('test-user-id')
+        expect(userId.getValue()).toBe('test-user-id')
     })
 
 })
@@ -64,14 +43,14 @@ suite('UserId.create factory method', () => {
 suite('UserId.equals method', () => {
 
     test('正常系 - 同じ値のUserIdは等しい', () => {
-        const userId1 = new UserId('birubiru')
-        const userId2 = new UserId('birubiru')
+        const userId1 = new UserId('user123')
+        const userId2 = new UserId('user123')
         expect(userId1.equals(userId2)).toBe(true)
     })
 
     test('正常系 - 異なる値のUserIdは等しくない', () => {
-        const userId1 = new UserId('birubiru')
-        const userId2 = new UserId('testid12')
+        const userId1 = new UserId('user123')
+        const userId2 = new UserId('user456')
         expect(userId1.equals(userId2)).toBe(false)
     })
 
