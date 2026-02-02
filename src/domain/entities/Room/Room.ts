@@ -1,6 +1,5 @@
 import { RoomId } from "./RoomId.js"
-import type { IIdGenerator } from "./shared/IdGenerator.js"
-import { ValidationError } from "./errors/index.js"
+import { ValidationError } from "../errors/index.js"
 
 type RoomStatus = "Available"|"Maintenace"|"Unavailable"
 
@@ -21,9 +20,9 @@ export class Room {
         this.roomStatus = roomStatus
     }
 
-    static create(name:string,capacity:number,idGenerator:IIdGenerator):Room{
-        const id = new RoomId(idGenerator.generate())
-        const room = new Room(id,name,capacity)
+    static create(id:string, name:string, capacity:number):Room{
+        const roomId = new RoomId(id)
+        const room = new Room(roomId,name,capacity)
 
         return room
     }

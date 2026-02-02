@@ -1,15 +1,15 @@
 import { test, suite, expect } from "vitest";
 import { Reservation } from "./Reservation.js";
-import { UserId } from "./UserId.js";
-import { RoomId } from "./RoomId.js";
+import { UserId } from "../User/UserId.js";
+import { RoomId } from "../Room/RoomId.js";
 import { ReservationId } from "./ReservationId.js";
-import { ValidationError, BusinessRuleViolationError } from "./errors/index.js";
+import { ValidationError, BusinessRuleViolationError } from "../errors/index.js";
 
 suite("timeValidation", () => {
 
-    const reservationId = new ReservationId('omgomgom')
-    const userId = new UserId('spbgspbg')
-    const roomId = new RoomId('12345678')
+    const reservationId = new ReservationId('resv001')
+    const userId = new UserId('user123')
+    const roomId = new RoomId('room123')
 
     test("正常系 - 正しい時間範囲（3時間）", () => {
         const startTime = new Date('9999-01-01T10:00:00Z')
@@ -88,19 +88,15 @@ suite("timeValidation", () => {
 
 suite("Reservation.create static method", () => {
 
-    const userId = new UserId('spbgspbg')
-    const roomId = new RoomId('12345678')
+    const userId = new UserId('user123')
+    const roomId = new RoomId('room123')
     const startTime = new Date('9999-01-01T10:00:00Z')
     const endTime = new Date('9999-01-01T13:00:00Z')
 
-    test("IdGeneratorを使って予約を作成", () => {
-        const mockIdGenerator = {
-            generate: () => 'resvid12'
-        }
+    test("id文字列を使って予約を作成", () => {
+        const reservation = Reservation.create('resv-test-id-123', userId, roomId, startTime, endTime)
 
-        const reservation = Reservation.create(userId, roomId, startTime, endTime, mockIdGenerator)
-
-        expect(reservation.id.getValue()).toBe('resvid12')
+        expect(reservation.id.getValue()).toBe('resv-test-id-123')
         expect(reservation.userId).toBe(userId)
         expect(reservation.roomId).toBe(roomId)
         expect(reservation.startTime).toEqual(startTime)
@@ -108,13 +104,21 @@ suite("Reservation.create static method", () => {
         expect(reservation.status).toBe('Confirm')
     })
 
+    test("UUID形式のidで予約を作成", () => {
+        const uuid = '550e8400-e29b-41d4-a716-446655440000'
+        const reservation = Reservation.create(uuid, userId, roomId, startTime, endTime)
+
+        expect(reservation.id.getValue()).toBe(uuid)
+        expect(reservation.status).toBe('Confirm')
+    })
+
 })
 
 suite("cancel method", () => {
 
-    const reservationId = new ReservationId('omgomgom')
-    const userId = new UserId('spbgspbg')
-    const roomId = new RoomId('12345678')
+    const reservationId = new ReservationId('resv001')
+    const userId = new UserId('user123')
+    const roomId = new RoomId('room123')
     const startTime = new Date('9999-01-01T10:00:00Z')
     const endTime = new Date('9999-01-01T13:00:00Z')
 
@@ -141,9 +145,9 @@ suite("cancel method", () => {
 
 suite("status check methods", () => {
 
-    const reservationId = new ReservationId('omgomgom')
-    const userId = new UserId('spbgspbg')
-    const roomId = new RoomId('12345678')
+    const reservationId = new ReservationId('resv001')
+    const userId = new UserId('user123')
+    const roomId = new RoomId('room123')
     const startTime = new Date('9999-01-01T10:00:00Z')
     const endTime = new Date('9999-01-01T13:00:00Z')
 
@@ -171,9 +175,9 @@ suite("status check methods", () => {
 
 suite("isActive method", () => {
 
-    const reservationId = new ReservationId('omgomgom')
-    const userId = new UserId('spbgspbg')
-    const roomId = new RoomId('12345678')
+    const reservationId = new ReservationId('resv001')
+    const userId = new UserId('user123')
+    const roomId = new RoomId('room123')
 
     test("正常系 - Confirmで未来の予約（アクティブ）", () => {
         const startTime = new Date('9999-01-01T10:00:00Z')
@@ -195,9 +199,9 @@ suite("isActive method", () => {
 
 suite("isPast method", () => {
 
-    const reservationId = new ReservationId('omgomgom')
-    const userId = new UserId('spbgspbg')
-    const roomId = new RoomId('12345678')
+    const reservationId = new ReservationId('resv001')
+    const userId = new UserId('user123')
+    const roomId = new RoomId('room123')
 
     test("正常系 - 未来の予約（過去ではない）", () => {
         const startTime = new Date('9999-01-01T10:00:00Z')
@@ -211,9 +215,9 @@ suite("isPast method", () => {
 
 suite("duration methods", () => {
 
-    const reservationId = new ReservationId('omgomgom')
-    const userId = new UserId('spbgspbg')
-    const roomId = new RoomId('12345678')
+    const reservationId = new ReservationId('resv001')
+    const userId = new UserId('user123')
+    const roomId = new RoomId('room123')
 
     test("getDurationMinutes - 3時間（180分）", () => {
         const startTime = new Date('9999-01-01T10:00:00Z')
@@ -244,11 +248,11 @@ suite("duration methods", () => {
 
 suite("isOverlapping method", () => {
 
-    const reservationId1 = new ReservationId('resv0001')
-    const reservationId2 = new ReservationId('resv0002')
-    const userId = new UserId('spbgspbg')
-    const roomId1 = new RoomId('room0001')
-    const roomId2 = new RoomId('room0002')
+    const reservationId1 = new ReservationId('resv001')
+    const reservationId2 = new ReservationId('resv002')
+    const userId = new UserId('user123')
+    const roomId1 = new RoomId('room001')
+    const roomId2 = new RoomId('room002')
 
     test("正常系 - 同じ部屋で時間が重複", () => {
         const reservation1 = new Reservation(
@@ -349,9 +353,9 @@ suite("isOverlapping method", () => {
 
 suite("changeTime method", () => {
 
-    const reservationId = new ReservationId('omgomgom')
-    const userId = new UserId('spbgspbg')
-    const roomId = new RoomId('12345678')
+    const reservationId = new ReservationId('resv001')
+    const userId = new UserId('user123')
+    const roomId = new RoomId('room123')
     const startTime = new Date('9999-01-01T10:00:00Z')
     const endTime = new Date('9999-01-01T13:00:00Z')
 
