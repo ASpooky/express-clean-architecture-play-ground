@@ -1,7 +1,7 @@
 import express from 'express';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { PostgresClient } from '../postgres/client.js';
+import { PostgresPool } from './infra/postgres/pool.js';
 
 const app = express()
 
@@ -14,17 +14,6 @@ const __dirname = path.dirname(__filename);
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.set('views','src/interface/views') // いまのとこ効いてない
-
-app.get('/checkdb',async(req,res)=>{
-    console.log('hi postgres')
-    const pgClient = new PostgresClient()
-    await pgClient.client.connect()
-    const pgRes = await pgClient.client.query("select 'Hello world!' as hello")
-    res.send({
-        query:"select 'Hello world!' as hello",
-        result: pgRes.rows[0].hello
-    })
-})
 
 app.get('/',(req,res)=>{
     console.log('hi!')
