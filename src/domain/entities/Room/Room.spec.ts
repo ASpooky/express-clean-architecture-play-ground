@@ -1,7 +1,7 @@
 import { Room } from "./Room.js";
 import { RoomId } from "./RoomId.js";
 import { test, suite, expect } from "vitest";
-import { ValidationError } from "./errors/index.js";
+import { ValidationError } from "../errors/index.js";
 
 suite('Room name validation', () => {
 

@@ -1,5 +1,5 @@
 import { UserId } from "./UserId.js"
-import { ValidationError } from "./errors/index.js"
+import { ValidationError } from "../errors/index.js"
 
 export class User {
     public readonly id : UserId

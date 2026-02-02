@@ -1,9 +1,9 @@
 import { test, suite, expect } from "vitest";
 import { Reservation } from "./Reservation.js";
-import { UserId } from "./UserId.js";
-import { RoomId } from "./RoomId.js";
+import { UserId } from "../User/UserId.js";
+import { RoomId } from "../Room/RoomId.js";
 import { ReservationId } from "./ReservationId.js";
-import { ValidationError, BusinessRuleViolationError } from "./errors/index.js";
+import { ValidationError, BusinessRuleViolationError } from "../errors/index.js";
 
 suite("timeValidation", () => {
 

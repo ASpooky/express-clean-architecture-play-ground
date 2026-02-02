@@ -1,4 +1,4 @@
-import { ValidationError } from "./errors/index.js"
+import { ValidationError } from "../errors/index.js"
 
 export class RoomId {
     private readonly value: string

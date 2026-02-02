@@ -1,6 +1,6 @@
-import { ValidationError } from "./errors/index.js"
+import { ValidationError } from "../errors/index.js"
 
-export class UserId {
+export class ReservationId {
     private readonly value: string
 
     constructor(value: string) {
@@ -10,7 +10,7 @@ export class UserId {
 
     private validate(value: string): void {
         if (value.length === 0) {
-            throw new ValidationError("User idは空文字列にできません。")
+            throw new ValidationError("Reservation idは空文字列にできません。")
         }
     }
 
@@ -22,14 +22,14 @@ export class UserId {
         return this.value
     }
 
-    equals(other: UserId): boolean {
-        if (!(other instanceof UserId)) {
+    equals(other: ReservationId): boolean {
+        if (!(other instanceof ReservationId)) {
             return false
         }
         return this.value === other.value
     }
 
-    static create(value: string): UserId {
-        return new UserId(value)
+    static create(value: string): ReservationId {
+        return new ReservationId(value)
     }
 }

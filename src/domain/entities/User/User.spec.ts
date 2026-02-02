@@ -1,7 +1,7 @@
 import { test,suite,expect } from 'vitest'
 import { User } from './User.js'
 import { UserId } from './UserId.js'
-import { ValidationError } from './errors/index.js'
+import { ValidationError } from '../errors/index.js'
 
 suite('User name validation',()=>{
 

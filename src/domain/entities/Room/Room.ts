@@ -1,5 +1,5 @@
 import { RoomId } from "./RoomId.js"
-import { ValidationError } from "./errors/index.js"
+import { ValidationError } from "../errors/index.js"
 
 type RoomStatus = "Available"|"Maintenace"|"Unavailable"
 

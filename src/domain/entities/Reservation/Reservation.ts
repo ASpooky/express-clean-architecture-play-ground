@@ -1,7 +1,7 @@
-import type { RoomId } from "./RoomId.js"
-import type { UserId } from "./UserId.js"
+import type { RoomId } from "../Room/RoomId.js"
+import type { UserId } from "../User/UserId.js"
 import { ReservationId } from "./ReservationId.js"
-import { ValidationError, BusinessRuleViolationError } from "./errors/index.js"
+import { ValidationError, BusinessRuleViolationError } from "../errors/index.js"
 
 type ReservationStatus = "Confirm"|"Cancel"
 
