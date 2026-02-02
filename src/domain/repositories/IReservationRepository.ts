@@ -9,4 +9,5 @@ export interface IReservationRepository{
     findById(id: ReservationId): Promise<Reservation | null>
     findByUserId(userId: UserId): Promise<Reservation[]>
     findByRoomId(roomId: RoomId): Promise<Reservation[]>
+    findOverlapping(roomId: RoomId, startTime: Date, endTime: Date): Promise<Reservation[]>
 }
