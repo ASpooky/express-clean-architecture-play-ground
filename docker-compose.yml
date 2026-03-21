@@ -2,23 +2,25 @@ services:
   app:
     image: node:20
     container_name: 'express-crean-architecture-play-ground'
-    env_file:
-      - ./.env
     ports:
       - 3000:3000
+      - 5173:5173
     command: sh -c "npm ci && npm run dev"
     volumes:
       - .:/app
       - /app/node_modules
     working_dir: /app
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     environment:
       POSTGRES_USER: POSTGRES_USER
       POSTGRES_PASSWORD: POSTGRES_PASSWORD
       POSTGRES_DB: my_database
       POSTGRES_HOST: db
       POSTGRES_PORT: 5432
+      API_URL: http://app:3000
+
   db:
     image: postgres:16
     environment:
@@ -27,3 +29,14 @@ services:
       POSTGRES_DB: my_database
     ports:
       - 5432:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./docker/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U POSTGRES_USER -d my_database"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
