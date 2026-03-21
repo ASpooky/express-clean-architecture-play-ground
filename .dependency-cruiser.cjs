@@ -124,6 +124,35 @@ module.exports = {
       }
     },
 
+    /* Clean Architecture dependency rules */
+    {
+      name: 'domain-must-not-depend-on-outer-layers',
+      severity: 'error',
+      comment: 'domain層は他の層に依存してはいけない。依存の方向はdomain←usecase←interface←infraの一方向のみ許可。',
+      from: { path: '^src/domain/' },
+      to: {
+        path: '^src/(usecase|interface|infra)/'
+      }
+    },
+    {
+      name: 'usecase-must-not-depend-on-outer-layers',
+      severity: 'error',
+      comment: 'usecase層はinfra・interfaceに依存してはいけない。interfaceのI*（インターフェース）はdomainに属するため参照可。',
+      from: { path: '^src/usecase/' },
+      to: {
+        path: '^src/(interface|infra)/'
+      }
+    },
+    {
+      name: 'interface-must-not-depend-on-infra',
+      severity: 'error',
+      comment: 'interface層はinfraの具象クラスに依存してはいけない。DIはinfra/web/index.tsで行う。',
+      from: { path: '^src/interface/' },
+      to: {
+        path: '^src/infra/'
+      }
+    },
+
     /* rules you might want to tweak for your specific situation: */
     
     {
